@@ -54,8 +54,8 @@ git clone https://github.com/UKayeF/dotfiles ~
 function install_bundle()
 {
   pathexists=$(ls -A ~/.vim/bundle | grep ${$2})
-  if [[ "$pathexists" != "" ]] then
-    return;
+  if [ "$pathexists" != "" ] then
+    return
   fi
   git clone $1 ~/.vim/bundle/${$2}
 }

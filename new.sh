@@ -5,12 +5,13 @@ echo "Script #$$ running with $# args: $@"
 for arg in $@; do
   if [ "$arg" == "-y" ]; then
     y="-y"
-  elif [ "$arg" == "-c"]; then
+  fi
+  if [ "$arg" == "-c"]; then
     echo "Clean up directories? [Y]es/[N]o"
     read accept
     if [[ "$accept" =~ [Y|y]?(es) ]]; then
       echo "Cleaning up directories now..."
-      rm -rf ~/{.vim,.vimrc,dotfiles}; exit 0
+      rm -rf ~/{.vim,.vimrc,dotfiles}; exit 0;
     fi
   fi
 done

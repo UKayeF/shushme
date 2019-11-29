@@ -6,13 +6,15 @@ for arg in $@; do
   if [ "$arg" == "-y" ]; then
     y="-y"
   fi
-  if [ "$arg" == "-c"]; then
+  if [ "$arg" == "-c" ]; then
     echo "Clean up directories? [Y]es/[N]o"
     read accept
-    if [[ "$accept" =~ [Y|y]?(es) ]]; then
+    if [[ "$accept" =~ [Y|y](es)* ]]; then
       echo "Cleaning up directories now..."
-      rm -rf ~/{.vim,.vimrc,dotfiles}; exit 0;
+      rm -rf ~/{.vim,.vimrc,dotfiles}
+      else echo "No changes made, exiting now...";
     fi
+    exit 0;
   fi
 done
 echo $y

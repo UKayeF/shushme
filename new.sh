@@ -71,10 +71,11 @@ git clone https://github.com/UKayeF/dotfiles ~/dotfiles
 
 function install_bundle()
 {
-  pathexists=$(ls -A ~/.vim/bundle | grep ${$2})
+	echo $2
+  pathexists=$(ls -A ~/.vim/bundle | grep "$2")
   if [ "$pathexists" != "" ]; then
     echo $pathexists; return;
-   else git clone $1 ~/.vim/bundle/${$2}
+   else git clone $1 ~/.vim/bundle/"$2"
   fi
 }
 
@@ -83,10 +84,11 @@ if [ "$(ls -A ~ | grep .vimrc)" != ".vimrc" ]; then
   mkdir -p ~/.vim/{bundle,autoload}
   echo "Install Pathogen? [Y]es/[N]o"
   read yes
-  if [[ "$yes" =~ [Y|y]?(es) ]]; then
+  if [[ "$yes" =~ [Y|y](es)* ]]; then
     # Pathogen Vim
-    git clone https://github.com/tpope/vim-pathogen ~/.vim
-    mv ~/.vim/vim-pathogen/autoload/ ~/.vim/autoload/
+    git clone https://github.com/tpope/vim-pathogen ~/.vim/vim-pathogen
+    mv ~/.vim/vim-pathogen/autoload/pathogen.vim ~/.vim/autoload/
+    rm -rf ~/.vim/vim-pathogen
     gruvbox="https://github.com/morhetz/gruvbox"
     palenight="https://github.com/drewtempelmeyer/palenight.vim"
     nerdtree="https://github.com/scrooloose/nerdtree"
@@ -100,7 +102,7 @@ if [ "$(ls -A ~ | grep .vimrc)" != ".vimrc" ]; then
     5) all of them\n
     6) I'm fine, thanks!"
     read num
-    case `num` in
+    case "$num" in
       1 )
         install_bundle $gruvbox gruvbox
         ;;
@@ -125,9 +127,9 @@ if [ "$(ls -A ~ | grep .vimrc)" != ".vimrc" ]; then
   fi
 fi
 
-echo "Plugins have been installed! Do you want to run vim now?"
+echo "Plugins have been installed! Do you want to run vim now? [Y]es/[N]o"
 read openvim
-if [[ "$openvim" =~ [Y|y]?(es) ]]; then
+if [[ "$openvim" =~ [Y|y](es)* ]]; then
   vim ~/.vimrc
 fi
 exit 0

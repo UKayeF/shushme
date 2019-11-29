@@ -3,11 +3,11 @@ echo "Script #$$ running with $# args: $@"
 
 # Check for -y
 for arg in $@; do
-  if [ "$arg" == "-y" ] || [ "$arg" == "-yy"]; then
+  if [ "$arg" == "-y" ] || [ "$arg" == "-yy" ]; then
     y="-y"
   fi
 
-  if [ "$arg" == "-yy"]; then
+  if [ "$arg" == "-yy" ]; then
     yes="yes"
   fi
 
@@ -86,8 +86,10 @@ function install_bundle()
 if [ "$(ls -A ~ | grep .vimrc)" != ".vimrc" ]; then
   cp ~/dotfiles/.vimrc ~/.vimrc
   mkdir -p ~/.vim/{bundle,autoload}
-  echo "Install Pathogen? [Y]es/[N]o"
-  read yes
+  if [ "$yes" != "yes" ]; then
+    echo "Install Pathogen? [Y]es/[N]o"
+    read yes
+  fi
   if [[ "$yes" =~ [Y|y](es)* ]]; then
     # Pathogen Vim
     git clone https://github.com/tpope/vim-pathogen ~/.vim/vim-pathogen

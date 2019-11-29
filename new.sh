@@ -17,7 +17,6 @@ for arg in $@; do
     exit 0;
   fi
 done
-echo $y
 
 function packman
 {

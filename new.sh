@@ -3,9 +3,14 @@ echo "Script #$$ running with $# args: $@"
 
 # Check for -y
 for arg in $@; do
-  if [ "$arg" == "-y" ]; then
+  if [ "$arg" == "-y" ] || [ "$arg" == "-yy"]; then
     y="-y"
   fi
+
+  if [ "$arg" == "-yy"]; then
+    yes="yes"
+  fi
+
   if [ "$arg" == "-c" ]; then
     echo "Clean up directories? [Y]es/[N]o"
     read accept

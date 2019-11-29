@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 echo "Script #$$ running with $# args: $@"
 
+# Check for -y
+for arg in $@; do
+  if [ "$arg" == "-y" ]; then
+    y="-y"
+  fi
+done
+echo $y
+
 function packman
 {
   case `uname` in
@@ -24,24 +32,24 @@ echo $PM
 # Install git and vim which are needed for the next steps
 case $PM in
   pacman )
-    pacman -Syu
-    pacman -S git
-    pacman -S vim
+    pacman -Su $y
+    pacman -S git $y
+    pacman -S vim $y
     ;;
   apt-get )
-    apt-get update
-    apt-get install git
-    apt-get install vim
+    apt-get update $y
+    apt-get install git $y
+    apt-get install vim $y
     ;;
   zypper )
-    zypper patch
-    zypper in git
-    zypper in vim
+    zypper patch $y
+    zypper in git $y
+    zypper in vim $y
     ;;
   yum )
-    yum update
-    yum install git
-    yum install vim
+    yum update $y
+    yum install git $y
+    yum install vim $y
     ;;
   * )
     ;;
@@ -49,30 +57,30 @@ esac
 echo "Congratulations, you have successfully installed git and vim!"
 
 # Set up vim config
-git clone https://github.com/UKayeF/dotfiles ~
+git clone https://github.com/UKayeF/dotfiles ~/dotfiles
 
 function install_bundle()
 {
   pathexists=$(ls -A ~/.vim/bundle | grep ${$2})
-  if [ "$pathexists" != "" ] then
-    return
+  if [ "$pathexists" != "" ]; then
+    echo $pathexists; return;
+   else git clone $1 ~/.vim/bundle/${$2}
   fi
-  git clone $1 ~/.vim/bundle/${$2}
 }
 
-if [ "$(ls -A ~ | grep .vimrc)" != ".vimrc" ] then
+if [ "$(ls -A ~ | grep .vimrc)" != ".vimrc" ]; then
   cp ~/dotfiles/.vimrc ~/.vimrc
   mkdir -p ~/.vim/{bundle,autoload}
   echo "Install Pathogen? [Y]es/[N]o"
   read yes
-  if [[ "$yes" =~ [Y|y]?(es) ]] then
+  if [[ "$yes" =~ [Y|y]?(es) ]]; then
     # Pathogen Vim
     git clone https://github.com/tpope/vim-pathogen ~/.vim
     mv ~/.vim/vim-pathogen/autoload/ ~/.vim/autoload/
-    $gruvbox="https://github.com/morhetz/gruvbox"
-    $palenight="https://github.com/drewtempelmeyer/palenight.vim"
-    $nerdtree="https://github.com/scrooloose/nerdtree"
-    $airline="https://github.com/vim-airline/vim-airline"
+    gruvbox="https://github.com/morhetz/gruvbox"
+    palenight="https://github.com/drewtempelmeyer/palenight.vim"
+    nerdtree="https://github.com/scrooloose/nerdtree"
+    airline="https://github.com/vim-airline/vim-airline"
 
     echo "Pathogen installed! Which bundles do you want to install?\n
     1) gruvbox color theme\n
@@ -109,12 +117,11 @@ fi
 
 echo "Plugins have been installed! Do you want to run vim now?"
 read openvim
-if [[ "$openvim" =~ [Y|y]?(es) ]] then
+if [[ "$openvim" =~ [Y|y]?(es) ]]; then
   vim ~/.vimrc
 fi
 exit 0
 
 
 
-fi
 
